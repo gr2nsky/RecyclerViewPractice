@@ -16,9 +16,9 @@ class PhoneBookListAdapter(var persons: Array<Person>, var con: Context) :
     var TAG = "PhoneBookListAdapter"
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        lateinit var iv_person_phone_book_list_item: ImageView
-        lateinit var tv_name_phone_book_list_item: TextView
-        lateinit var tv_phone_number_phone_book_list_item: TextView
+        var iv_person_phone_book_list_item: ImageView
+        var tv_name_phone_book_list_item: TextView
+        var tv_phone_number_phone_book_list_item: TextView
 
         init {
             iv_person_phone_book_list_item = itemView.findViewById(R.id.iv_person_phone_book_list_item)
