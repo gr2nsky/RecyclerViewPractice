@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
             //텍스트 입력/수정시에 호출
             override fun onQueryTextChange(s: String): Boolean {
-                phoneBookListAdapter.getFilter().filter(s)
+                phoneBookListAdapter.filter.filter(s)
                 Log.d(TAG, "SearchVies Text is changed : $s")
                 return false
             }
