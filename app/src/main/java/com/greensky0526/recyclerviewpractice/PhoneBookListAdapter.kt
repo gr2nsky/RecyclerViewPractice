@@ -65,7 +65,7 @@ class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
     }
 
     override fun getItemCount(): Int {
-        return persons.size
+        return filteredPersons.size
     }
 
     //-- filter
@@ -87,7 +87,7 @@ class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
                 results.count = persons.size
 
                 return results
-            //공백제외 2글자 이하인 경우 -> 이름으로만 검색
+            //공백제외 2글자 이인 경우 -> 이름으로만 검색
             } else if (filterString.trim { it <= ' ' }.length <= 2) {
                 for (person in persons) {
                     if (person.name.contains(filterString)) {
