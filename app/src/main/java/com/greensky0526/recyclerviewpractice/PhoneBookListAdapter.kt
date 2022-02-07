@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.Filter.FilterResults
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
@@ -20,14 +23,27 @@ class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
     var itemFilter = ItemFilter()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        //swipe layout
+        var swipe_item_phone_book_list: LinearLayout
         var iv_person_phone_book_list_item: ImageView
         var tv_name_phone_book_list_item: TextView
         var tv_phone_number_phone_book_list_item: TextView
 
+        //behind layout
+        var iv_call_phone_book_list_item: ImageView
+        var iv_message_phone_book_list_item: ImageView
+
         init {
+            //swipe layout
+            swipe_item_phone_book_list = itemView.findViewById(R.id.swipe_item_phone_book_list)
             iv_person_phone_book_list_item = itemView.findViewById(R.id.iv_person_phone_book_list_item)
             tv_name_phone_book_list_item = itemView.findViewById(R.id.tv_name_phone_book_list_item)
             tv_phone_number_phone_book_list_item = itemView.findViewById(R.id.tv_phone_number_phone_book_list_item)
+
+            //behind layout
+            iv_call_phone_book_list_item = itemView.findViewById(R.id.iv_call_phone_book_list_item)
+            iv_message_phone_book_list_item = itemView.findViewById(R.id.iv_message_phone_book_list_item)
 
             itemView.setOnClickListener {
                 AlertDialog.Builder(con).apply {
@@ -73,6 +89,11 @@ class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
         return itemFilter
     }
 
+    fun initFilteredPersons() {
+        filteredPersons.clear()
+        filteredPersons.addAll(persons)
+    }
+
     inner class ItemFilter : Filter() {
         override fun performFiltering(charSequence: CharSequence): FilterResults {
             val filterString = charSequence.toString()
@@ -115,6 +136,4 @@ class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
             notifyDataSetChanged()
         }
     }
-
-
 }

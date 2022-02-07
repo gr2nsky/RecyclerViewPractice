@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var search_view_phone_book: SearchView
 
+    lateinit var itemTouchHelper: ItemTouchHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,7 +29,21 @@ class MainActivity : AppCompatActivity() {
         search_view_phone_book.setOnQueryTextListener(searchViewTextListener)
 
         persons = tempPersons()
-        setAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (phoneBookListAdapter == null) {
+//            phoneBookListAdapter.initFilteredPersons()
+//            Persons.getPersons().sort()
+            setAdapter()
+        }
+        if (phoneBookListAdapter != null) {
+            phoneBookListAdapter.initFilteredPersons()
+//            Persons.getPersons().sort()
+            phoneBookListAdapter.notifyDataSetChanged()
+            phoneBookListAdapter.filter.filter(search_view_phone_book.query)
+        }
     }
 
     //SearchView 텍스트 입력시 이벤트
@@ -50,6 +67,11 @@ class MainActivity : AppCompatActivity() {
         rv_phone_book.layoutManager = LinearLayoutManager(this)
         phoneBookListAdapter = PhoneBookListAdapter(persons, this)
         rv_phone_book.adapter = phoneBookListAdapter
+
+        //스와이프 이벤트 부착
+        itemTouchHelper = ItemTouchHelper(PhoneBookListItemHelper(this))
+        itemTouchHelper.attachToRecyclerView(rv_phone_book)
+
     }
 
     fun tempPersons(): ArrayList<Person> {
