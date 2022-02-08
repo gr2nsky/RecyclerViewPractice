@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
 
     lateinit var rv_phone_book: RecyclerView
-    lateinit var phoneBookListAdapter: PhoneBookListAdapter
+    var phoneBookListAdapter: PhoneBookListAdapter? = null
     lateinit var persons: ArrayList<Person>
 
     lateinit var search_view_phone_book: SearchView
@@ -37,12 +37,11 @@ class MainActivity : AppCompatActivity() {
 //            phoneBookListAdapter.initFilteredPersons()
 //            Persons.getPersons().sort()
             setAdapter()
-        }
-        if (phoneBookListAdapter != null) {
-            phoneBookListAdapter.initFilteredPersons()
+        } else {
+            phoneBookListAdapter!!.initFilteredPersons()
 //            Persons.getPersons().sort()
-            phoneBookListAdapter.notifyDataSetChanged()
-            phoneBookListAdapter.filter.filter(search_view_phone_book.query)
+            phoneBookListAdapter!!.notifyDataSetChanged()
+            phoneBookListAdapter!!.filter.filter(search_view_phone_book.query)
         }
     }
 
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
             //텍스트 입력/수정시에 호출
             override fun onQueryTextChange(s: String): Boolean {
-                phoneBookListAdapter.filter.filter(s)
+                phoneBookListAdapter?.filter?.filter(s)
                 Log.d(TAG, "SearchVies Text is changed : $s")
                 return false
             }
@@ -65,13 +64,12 @@ class MainActivity : AppCompatActivity() {
     fun setAdapter(){
         //리사이클러뷰에 리사이클러뷰 어댑터 부착
         rv_phone_book.layoutManager = LinearLayoutManager(this)
-        phoneBookListAdapter = PhoneBookListAdapter(persons, this)
+        phoneBookListAdapter = PhoneBookListAdapter(persons)
         rv_phone_book.adapter = phoneBookListAdapter
 
         //스와이프 이벤트 부착
         itemTouchHelper = ItemTouchHelper(PhoneBookListItemHelper(this))
         itemTouchHelper.attachToRecyclerView(rv_phone_book)
-
     }
 
     fun tempPersons(): ArrayList<Person> {

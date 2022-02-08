@@ -15,14 +15,14 @@ import android.widget.Filter.FilterResults
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
+class PhoneBookListAdapter(var persons: ArrayList<Person>) :
     RecyclerView.Adapter<PhoneBookListAdapter.ViewHolder>(), Filterable {
     var TAG = "PhoneBookListAdapter"
 
     var filteredPersons = ArrayList<Person>()
     var itemFilter = ItemFilter()
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, con: Context) : RecyclerView.ViewHolder(itemView) {
 
         //swipe layout
         var swipe_item_phone_book_list: LinearLayout
@@ -69,7 +69,7 @@ class PhoneBookListAdapter(var persons: ArrayList<Person>, var con: Context) :
         val inflater = con.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.item_phonebook, parent, false)
 
-        return ViewHolder(view)
+        return ViewHolder(view, con)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

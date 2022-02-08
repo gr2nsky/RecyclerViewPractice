@@ -20,27 +20,31 @@ class PhoneBookListItemHelper(val con: Context): ItemTouchHelper.Callback() {
         return false
     }
 
-//    private fun getView(viewHolder: RecyclerView.ViewHolder): View? {
-//        return (viewHolder as PhoneBookListAdapter.ViewHolder).swipe_item_phone_book_list
-//    }
-//
-//    override fun onChildDraw(
-//        c: Canvas, recyclerView: RecyclerView,
-//        viewHolder: RecyclerView.ViewHolder,
-//        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
-//    ) {
-//        Log.d(TAG, "Orign position : $dX,$dY")
-//        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-//            val view = getView(viewHolder)
-//            getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive)
-//            Log.d(TAG, "moved position : $dX,$dY")
-//        }
-//    }
+    override fun onChildDraw(
+        c: Canvas, recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+    ) {
+        Log.d(TAG, "Orign position : $dX,$dY")
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            val view = (viewHolder as PhoneBookListAdapter.ViewHolder).swipe_item_phone_book_list
+            getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive)
+            Log.d(TAG, "moved position : $dX,$dY")
+        }
+    }
+
+    //상호작용 종료 및 애니메이션 종료 후 호출
+    override fun clearView(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+    ) {
+        getDefaultUIUtil().clearView((viewHolder as PhoneBookListAdapter.ViewHolder).swipe_item_phone_book_list)
+    }
 
     //드래그 및 스와이프 방향을 제어. 드래그는 사용하지 않고, 양방향 스와이프를 사용한다.
     override fun getMovementFlags(
         recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ): Int {
         return makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
     }
@@ -48,7 +52,7 @@ class PhoneBookListItemHelper(val con: Context): ItemTouchHelper.Callback() {
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean {
         return false
     }
